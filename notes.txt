@@ -1,0 +1,119 @@
+1:26:40
+1.generate product-view component with html and css
+2.create productmodal.tsexport interface product{
+    id:number;
+    title:string;
+    description:string;
+    price:number;
+    category:string;
+    thumbnail:string;
+    images:string;
+}
+3.create shared folder and in it add service api.ts
+import { product } from '../product-view-component/productmodal';
+import observable
+constructor(private http:HttpClient) { }
+getProducts(): Observable<product[]> {
+  return this.http.get<product[]>("https://dummyjson.com/products")
+}
+
+4.subscribe in component
+export class ProductViewComponentComponent  implements OnInit {
+data:any | product[]
+  constructor(private api:ApiService) { }
+
+  ngOnInit():void {
+    this.displayProducts();
+  }
+displayProducts(){
+  this.api.getProducts().subscribe(res=>{
+    this.data=res;
+    console.log(res);
+  })}
+}
+5.display products in html using *ngfor
+ <div class="col-md-2 mt-3" *ngFor="let item of data?.products">
+ bind it using interpolation {{item.thumbnail}} and other
+ 6.on button click route to productdetail page routerLink="/productdetail"
+ 7.create productdetails page, create html  and css
+ 8.create function in apiservice for getproduct by click by id
+ 
+getProductById(id: string): Observable<product> {
+  return this.http.get<product>("https://dummyjson.com/products/" + id)
+}
+9.in productviewdetailcomponent 
+export class ProductDetailComponentComponent  implements OnInit {
+productdata:any|product[];
+showadd:boolean=true;
+showremove:boolean=false;
+  constructor(private api:ApiService,private activatedroute:ActivatedRoute) { }
+
+  ngOnInit() {
+let productid=this.activatedroute.snapshot.paramMap.get('productid');
+//console.log("id is",productid)
+productid && this.api.getProductById(productid).subscribe((res)=>{
+  this.productdata=res;
+  console.log(res);
+  
+})
+
+  }}
+10.in productview component html
+  <button class="btn btn-dark btn-sm mt-2" routerLink="/productdetail/{{item.id}}"  ><i class="fa fa-solid fa-info mt-2"></i>&nbsp;View Details</button><br>
+11.in app routing component
+
+  {
+    path:'productview',
+    component:ProductViewComponentComponent
+  },
+  {
+    path:'productdetail/:productid',
+    component:ProductDetailComponentComponent
+  },
+  {
+    path: '',
+    redirectTo: 'productview',
+    pathMatch: 'full'
+  },
+  12.create header component ,in header.ts 
+  export class HeaderComponent  implements OnInit {
+public cartitems:number=0;
+  constructor(private api:ApiService) { }
+
+  ngOnInit() {
+    this.api.products().subscribe((res)=>{
+      this.cartitems=res.length;
+    })
+  }
+
+}
+13.in product details add 2 buttons add to cart and remove from caart
+addtoCart(data:product){
+  this.cartItemList.push(data);
+  this.productList.next(this.cartItemList);
+  console.log(this.cartItemList);
+  
+}
+products(){
+  return this.productList.asObservable();
+}
+removecartItem(data:product){
+  this.cartItemList.map((a:product,index:product)=>{
+    if(data.id==a.id){
+      this.cartItemList.splice(index,1)
+    }
+  })
+  this.productList.next(this.cartItemList);
+}
+14.in details.ts component
+ addToCart(productdata:product){
+this.showadd=false;
+this.showremove=true;
+this.api.addtoCart(productdata)
+  }
+  removeItem(productdata:product){
+    this.showadd=true;
+    this.showremove=false;
+    this.api.removecartItem(productdata);
+  }
+15.

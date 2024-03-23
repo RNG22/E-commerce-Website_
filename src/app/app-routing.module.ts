@@ -1,14 +1,32 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { ProductViewComponentComponent } from './product-view-component/product-view-component.component';
+import { ProductDetailComponentComponent } from './product-detail-component/product-detail-component.component';
+import { CartPageComponent } from './cart-page/cart-page.component';
 
 const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   },
+
+
+  
+  {
+    path:'productview',
+    component:ProductViewComponentComponent
+  },
+  {
+    path:'productdetail/:productid',
+    component:ProductDetailComponentComponent
+  },
+  {
+    path:'cart-page',
+    component:CartPageComponent
+  },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'productview',
     pathMatch: 'full'
   },
 ];
