@@ -52,5 +52,18 @@ removecartItem(data:product){
   })
   this.productList.next(this.cartItemList);
 }
-
+//total Calculation
+calculatePrice(){
+  let total=0;
+  this.cartItemList.map((a:any)=>{
+    total+=a.price;
+  })
+  return total;
+}
+//remove All Items
+removeAllItems(){
+  this.cartItemList=[];
+  this.productList.next(this.cartItemList);
+  console.log(this.cartItemList)
+}
 }

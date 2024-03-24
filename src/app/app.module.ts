@@ -9,11 +9,13 @@ import { ProductViewComponentComponent } from './product-view-component/product-
 import { ProductDetailComponentComponent } from './product-detail-component/product-detail-component.component';
 import { HeaderComponent } from './header/header.component';
 import { CartPageComponent } from './cart-page/cart-page.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { OrderPageComponent } from './order-page/order-page.component';
 
 
 @NgModule({
-  declarations: [AppComponent,ProductViewComponentComponent,ProductDetailComponentComponent,HeaderComponent,CartPageComponent],
-  imports: [BrowserModule, HttpClientModule,IonicModule.forRoot(), AppRoutingModule],
+  declarations: [AppComponent,ProductViewComponentComponent,ProductDetailComponentComponent,HeaderComponent,CartPageComponent,OrderPageComponent],
+  imports: [BrowserModule,ReactiveFormsModule, HttpClientModule,IonicModule.forRoot(), AppRoutingModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })
